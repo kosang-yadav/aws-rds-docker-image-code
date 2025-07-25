@@ -71,7 +71,6 @@ DB_USER=user
 DB_PASSWORD=password
 DB_NAME=mydatabase
 ```
-*Note*: When running with Docker Compose, the `DB_HOST` should be set to the database service name (e.g., `db`), as shown in the `docker-compose.yml` example below.
 
 ### Running Locally
 
@@ -80,7 +79,6 @@ To run the Node.js application directly on your machine (requires a local Postgr
 ```bash
 node server.js
 ```
-*Note: The exact command might vary if your `package.json` scripts are different, e.g., `node server.js`.*
 
 
 ## Docker Image
