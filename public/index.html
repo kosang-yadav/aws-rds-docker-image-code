@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dynamic Background Login</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Arial", sans-serif;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: linear-gradient(
+                    -45deg,
+                    #ee7752,
+                    #e73c7e,
+                    #23a6d5,
+                    #23d5ab
+                );
+                background-size: 400% 400%;
+                animation: gradientShift 15s ease infinite;
+                overflow: hidden;
+            }
+
+            @keyframes gradientShift {
+                0% {
+                    background-position: 0% 50%;
+                }
+                50% {
+                    background-position: 100% 50%;
+                }
+                100% {
+                    background-position: 0% 50%;
+                }
+            }
+
+            .container {
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(15px);
+                border-radius: 20px;
+                padding: 40px;
+                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                width: 450px;
+                text-align: center;
+                transform: scale(0.9);
+                animation: slideIn 1s ease-out forwards;
+            }
+
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px) scale(0.9);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            .title {
+                color: #ffffff;
+                font-size: 3rem;
+                margin-bottom: 10px;
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+                animation: glow 2s ease-in-out infinite alternate;
+                font-weight: bold;
+                letter-spacing: 2px;
+            }
+
+            .subtitle {
+                color: #f0f0f0;
+                font-size: 1.2rem;
+                margin-bottom: 30px;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+                font-weight: 300;
+                letter-spacing: 1px;
+            }
+
+            @keyframes glow {
+                from {
+                    text-shadow:
+                        3px 3px 6px rgba(0, 0, 0, 0.8),
+                        0 0 15px rgba(255, 255, 255, 0.3);
+                }
+                to {
+                    text-shadow:
+                        3px 3px 6px rgba(0, 0, 0, 0.8),
+                        0 0 25px rgba(255, 255, 255, 0.6);
+                }
+            }
+
+            .form-group {
+                margin-bottom: 25px;
+                position: relative;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 15px 20px;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-radius: 25px;
+                background: rgba(255, 255, 255, 0.9);
+                color: #333;
+                font-size: 16px;
+                outline: none;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(5px);
+                font-weight: 500;
+            }
+
+            .form-group input::placeholder {
+                color: rgba(0, 0, 0, 0.6);
+                font-weight: 400;
+            }
+
+            .form-group input:focus {
+                background: rgba(255, 255, 255, 0.95);
+                transform: scale(1.02);
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+                border-color: rgba(255, 255, 255, 0.8);
+            }
+
+            .submit-btn {
+                width: 100%;
+                padding: 15px;
+                border: none;
+                border-radius: 25px;
+                background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                color: white;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+                background: linear-gradient(45deg, #ff5252, #26a69a);
+            }
+
+            .submit-btn:active {
+                transform: translateY(0);
+            }
+
+            .floating-elements {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                z-index: -1;
+            }
+
+            .floating-element {
+                position: absolute;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 50%;
+                animation: float 6s ease-in-out infinite;
+            }
+
+            .floating-element:nth-child(1) {
+                width: 80px;
+                height: 80px;
+                left: 10%;
+                animation-delay: 0s;
+            }
+
+            .floating-element:nth-child(2) {
+                width: 120px;
+                height: 120px;
+                left: 80%;
+                animation-delay: 2s;
+            }
+
+            .floating-element:nth-child(3) {
+                width: 60px;
+                height: 60px;
+                left: 70%;
+                animation-delay: 4s;
+            }
+
+            .floating-element:nth-child(4) {
+                width: 100px;
+                height: 100px;
+                left: 20%;
+                animation-delay: 1s;
+            }
+
+            @keyframes float {
+                0%,
+                100% {
+                    transform: translateY(0px) rotate(0deg);
+                }
+                50% {
+                    transform: translateY(-100px) rotate(180deg);
+                }
+            }
+
+            .response-message {
+                margin-top: 20px;
+                padding: 10px;
+                border-radius: 10px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                display: none;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+
+            .success {
+                background: rgba(76, 175, 80, 0.8);
+                border-color: rgba(76, 175, 80, 0.6);
+            }
+
+            .error {
+                background: rgba(244, 67, 54, 0.8);
+                border-color: rgba(244, 67, 54, 0.6);
+            }
+
+            .footer-text {
+                color: #ffffff;
+                font-size: 1.1rem;
+                margin-top: 25px;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+                font-weight: 600;
+                letter-spacing: 1px;
+                animation: pulse 2s ease-in-out infinite;
+            }
+
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 0.8;
+                }
+                50% {
+                    opacity: 1;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+
+        <div class="container">
+            <h1 class="title">Node + RDS</h1>
+            <p class="subtitle">Data Management Portal</p>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Username"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Email Address"
+                        required
+                    />
+                </div>
+                <button type="submit" id="submitButton" class="submit-btn">
+                    Submit
+                </button>
+            </form>
+            <div id="responseMessage" class="response-message"></div>
+            <div class="footer-text">Trainwith100rabh</div>
+        </div>
+
+        <script>
+            document
+                .getElementById("registrationForm")
+                .addEventListener("submit", async function (e) {
+                    e.preventDefault();
+
+                    const username = document.getElementById("username").value;
+                    const email = document.getElementById("email").value;
+                    const messageDiv =
+                        document.getElementById("responseMessage");
+
+                    try {
+                        const response = await fetch("/submit-form", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ username, email }),
+                        });
+
+                        const result = await response.json();
+                        console.log({ response });
+                        console.log({ result });
+                        messageDiv.style.display = "block";
+                        if (response.ok) {
+                            messageDiv.className = "response-message success";
+                            messageDiv.textContent = result.message;
+                            document.getElementById("registrationForm").reset();
+                        } else {
+                            messageDiv.className = "response-message error";
+                            messageDiv.textContent = result.error;
+                        }
+                    } catch (error) {
+                        console.log({ error });
+                        messageDiv.style.display = "block";
+                        messageDiv.className = "response-message error";
+                        messageDiv.textContent =
+                            "An error occurred. Please try again.";
+                    }
+                });
+
+            // Additional dynamic background color cycling
+            let colorIndex = 0;
+            const colors = [
+                "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)",
+                "linear-gradient(-45deg, #ff9a56, #ff6b9d, #4ecdc4, #45b7d1)",
+                "linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c)",
+                "linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7)",
+            ];
+
+            setInterval(() => {
+                colorIndex = (colorIndex + 1) % colors.length;
+                document.body.style.background = colors[colorIndex];
+            }, 8000);
+        </script>
+    </body>
+</html>
