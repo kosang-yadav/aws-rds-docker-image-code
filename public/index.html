@@ -315,7 +315,7 @@
                             document.getElementById("registrationForm").reset();
                         } else {
                             messageDiv.className = "response-message error";
-                            messageDiv.textContent = result.error;
+                            messageDiv.textContent = result.message;
                         }
                     } catch (error) {
                         console.log({ error });
